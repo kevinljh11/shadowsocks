@@ -4,8 +4,8 @@ wget https://github.com/kevinljh11/shadowsocks/raw/rm/kcpstart.sh
 wget https://github.com/kevinljh11/shadowsocks/raw/rm/ss.sh
 wget https://github.com/kevinljh11/shadowsocks/raw/rm/kcpss.sh
 wget https://github.com/kevinljh11/shadowsocks/raw/rm/ss.json
-apt-get update
-apt-get install -y zip unzip
+#apt-get update
+#apt-get install -y zip unzip
 unzip master.zip
 chmod +x server_linux_amd64
 chmod +x kcpstart.sh
