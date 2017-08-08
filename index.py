@@ -11,9 +11,6 @@ class TodoHandler(BaseHTTPRequestHandler):
     """
  
     # Global instance to store todos. You should use a database in reality.
-    now = datetime.datetime.now()
-    
-    TODOS = 'Hello Juno '+now.strftime('%Y-%m-%d %H:%M:%S')
  
     def do_GET(self):
         # return all todos
@@ -23,7 +20,10 @@ class TodoHandler(BaseHTTPRequestHandler):
             return
  
         # Just dump data to json, and return it
-        message = json.dumps(self.TODOS)
+        now = datetime.datetime.now()
+        #TODOS = 'Hello Juno '+now.strftime('%Y-%m-%d %H:%M:%S') 
+        message ='Hello Juno '+now.strftime('%Y-%m-%d %H:%M:%S') 
+        #message = json.dumps(self.TODOS)
  
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
