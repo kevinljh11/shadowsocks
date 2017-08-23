@@ -1,60 +1,51 @@
-from BaseHTTPServer import BaseHTTPRequestHandler
-import cgi
-import json
+import BaseHTTPServer    
+import urlparse    
+import time  
 import datetime
- 
- 
-class TodoHandler(BaseHTTPRequestHandler):
-    """A simple TODO server
- 
-    which can display and manage todos for you.
-    """
- 
-    # Global instance to store todos. You should use a database in reality.
- 
-    def do_GET(self):
-        # return all todos
- 
-        if self.path != '/':
-            self.send_error(404, "File not found.")
-            return
- 
-        # Just dump data to json, and return it
+from SocketServer import ThreadingMixIn  
+import threading  
+  
+class WebRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):    
+      
+  def do_GET(self):
         now = datetime.datetime.now()
-        #TODOS = 'Hello Juno '+now.strftime('%Y-%m-%d %H:%M:%S') 
-        message ='Hello Juno '+now.strftime('%Y-%m-%d %H:%M:%S') 
-        #message = json.dumps(self.TODOS)
- 
+        parsed_path = urlparse.urlparse(self.path)
+        message = '\n'.join([
+          'Hello Juno '+now.strftime('%Y-%m-%d %H:%M:%S'),
+          'CLIENT VALUES:',
+          'client_address=%s (%s)' % (self.client_address, self.address_string()),
+          'command=%s' % self.command,
+          'path=%s' % self.path,
+          'real path=%s' % parsed_path.path,
+          'query=%s' % parsed_path.query,
+          'request_version=%s' % self.request_version,
+          '',
+          'SERVER VALUES:',
+          'server_version=%s' % self.server_version,
+          'sys_version=%s' % self.sys_version,
+          'protocol_version=%s' % self.protocol_version,
+          '',
+        ])
         self.send_response(200)
-        self.send_header('Content-type', 'application/json')
         self.end_headers()
+
         self.wfile.write(message)
- 
-    def do_POST(self):
-        """Add a new todo
- 
-        Only json data is supported, otherwise send a 415 response back.
-        Append new todo to class variable, and it will be displayed
-        in following get request
-        """
-        ctype, pdict = cgi.parse_header(self.headers['content-type'])
-        if ctype == 'application/json':
-            length = int(self.headers['content-length'])
-            post_values = json.loads(self.rfile.read(length))
-            self.TODOS.append(post_values)
-        else:
-            self.send_error(415, "Only json data is supported.")
-            return
- 
-        self.send_response(200)
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
- 
-        self.wfile.write(post_values)
- 
-if __name__ == '__main__':
-    # Start a simple server, and loop forever
-    from BaseHTTPServer import HTTPServer
-    server = HTTPServer(('0.0.0.0',8080), TodoHandler)
-    print("Starting server, use <Ctrl-C> to stop")
-    server.serve_forever()
+
+        return  
+  
+class ThreadingHttpServer( ThreadingMixIn, BaseHTTPServer.HTTPServer ):  
+    pass  
+  
+if __name__ == '__main__':  
+    #server = BaseHTTPServer.HTTPServer(('0.0.0.0',18460), WebRequestHandler)    
+    server = ThreadingHttpServer(('0.0.0.0',8080), WebRequestHandler)    
+    ip, port = server.server_address  
+    # Start a thread with the server -- that thread will then start one  
+    # more thread for each request  
+    server_thread = threading.Thread(target=server.serve_forever)  
+    # Exit the server thread when the main thread terminates  
+    server_thread.setDaemon(True)  
+    server_thread.start()  
+    print "Server loop running in thread:", server_thread.getName()  
+    while True:  
+        pass  
