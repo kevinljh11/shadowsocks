@@ -12,5 +12,5 @@ chmod +x server_linux_amd64
 chmod +x kcpstart.sh
 chmod +x ss.sh
 chmod +x kcpss.sh
-python /opt/repo/ROOT/shadowsocks-master/setup.py install
+#python /opt/repo/ROOT/shadowsocks-master/setup.py install
 bash kcpss.sh
