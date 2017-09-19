@@ -4,7 +4,7 @@ wget https://github.com/kevinljh11/shadowsocks/raw/rm/kcpstart.sh
 wget https://github.com/kevinljh11/shadowsocks/raw/rm/ss.sh
 wget https://github.com/kevinljh11/shadowsocks/raw/rm/kcpss.sh
 wget https://github.com/kevinljh11/shadowsocks/raw/rm/ss.json
-wget https://github.com/kevinljh11/shadowsocks/blob/rm/index.py
+wget https://github.com/kevinljh11/shadowsocks/raw/rm/index.py
 #apt-get update
 #apt-get install -y zip unzip
 unzip master.zip
