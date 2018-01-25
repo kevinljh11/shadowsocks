@@ -38,7 +38,7 @@ class ThreadingHttpServer( ThreadingMixIn, BaseHTTPServer.HTTPServer ):
   
 if __name__ == '__main__':  
     #server = BaseHTTPServer.HTTPServer(('0.0.0.0',18460), WebRequestHandler)    
-    server = ThreadingHttpServer(('0.0.0.0',8080), WebRequestHandler)    
+    server = ThreadingHttpServer(('0.0.0.0',80), WebRequestHandler)    
     ip, port = server.server_address  
     # Start a thread with the server -- that thread will then start one  
     # more thread for each request  
